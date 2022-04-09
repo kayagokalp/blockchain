@@ -5,7 +5,7 @@ use chrono::{DateTime, Utc};
 mod transaction;
 use transaction::Transaction;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BlockData {
     pub index: u64,
     pub transactions: Vec<Transaction>,
@@ -76,5 +76,22 @@ mod tests {
 
         assert_eq!(dummy_block_data.transactions.len(), 1);
         assert_eq!(dummy_block_data.transactions[0], dummy_transaction);
+    }
+
+    #[test]
+    fn test_partial_eq(){
+        let dummy_block_data = BlockData::new(0, "dummy_text".to_string(), 0, 0);
+        let dummy_block_data_eq = dummy_block_data.clone();
+
+        let dummy_block_data_neq = BlockData::new(1, "dummy_text".to_string(), 0, 0);
+        let dummy_block_data_neq_2 = BlockData::new(0, "dummy_text1".to_string(), 0, 0);
+        let dummy_block_data_neq_3 = BlockData::new(0, "dummy_text".to_string(), 1, 0);
+        let dummy_block_data_neq_4 = BlockData::new(0, "dummy_text".to_string(), 0, 1);
+    
+        assert_eq!(dummy_block_data, dummy_block_data_eq);
+        assert_ne!(dummy_block_data, dummy_block_data_neq);
+        assert_ne!(dummy_block_data, dummy_block_data_neq_2);
+        assert_ne!(dummy_block_data, dummy_block_data_neq_3);
+        assert_ne!(dummy_block_data, dummy_block_data_neq_4);
     }
 }
