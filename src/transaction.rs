@@ -5,7 +5,7 @@ extern crate chrono;
 use chrono::{DateTime, Utc};
 type Address = u64;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Transaction {
     pub transaction_data: TransactionData,
     pub tx: u64,
@@ -59,6 +59,7 @@ impl PartialEq for Transaction {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::{thread, time::Duration};
 
     // Since each transaction is created with a transaction_data which includes current time_stamp they all going to be different
     // even though we give the same parameters. Their hashes must be different in that case!
@@ -69,6 +70,7 @@ mod tests {
         let dummy_val = 10;
 
         let dummy_transaction_data = TransactionData::new(dummy_from, dummy_rec, dummy_val);
+        thread::sleep(Duration::from_millis(100));
         let dummy_transaction_data_2 = TransactionData::new(dummy_from, dummy_rec, dummy_val);
 
         let dummy_transaction = Transaction::new(dummy_transaction_data);
@@ -86,6 +88,7 @@ mod tests {
         let dummy_val = 10;
 
         let dummy_transaction_data = TransactionData::new(dummy_from, dummy_rec, dummy_val);
+        thread::sleep(Duration::from_millis(100));
         let dummy_transaction_data_2 = TransactionData::new(dummy_from, dummy_rec, dummy_val);
 
         assert_ne!(dummy_transaction_data, dummy_transaction_data_2);
