@@ -65,8 +65,15 @@ impl Blockchain {
                 "Block {}, hash {}, prev_hash {}",
                 block.block_data.index, block.hash, block.block_data.prev_hash
             );
-            for transaction in block.block_data.transactions.iter(){
-                println!("--- Transaction tx: {} timestamp {}, from {} to {} value {}", transaction.tx, transaction.transaction_data.timestamp, transaction.transaction_data.from, transaction.transaction_data.recipient, transaction.transaction_data.value);
+            for transaction in block.block_data.transactions.iter() {
+                println!(
+                    "--- Transaction tx: {} timestamp {}, from {} to {} value {}",
+                    transaction.tx,
+                    transaction.transaction_data.timestamp,
+                    transaction.transaction_data.from,
+                    transaction.transaction_data.recipient,
+                    transaction.transaction_data.value
+                );
             }
         }
     }
