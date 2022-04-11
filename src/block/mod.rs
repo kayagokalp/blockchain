@@ -1,7 +1,7 @@
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 
-mod block_data;
+pub mod block_data;
 use block_data::BlockData;
 
 #[derive(Debug, Clone)]

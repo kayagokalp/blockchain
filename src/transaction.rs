@@ -3,7 +3,7 @@ use std::hash::{Hash, Hasher};
 
 extern crate chrono;
 use chrono::{DateTime, Utc};
-type Address = u64;
+pub type Address = u64;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Transaction {

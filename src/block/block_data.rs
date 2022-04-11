@@ -2,7 +2,7 @@ extern crate chrono;
 use chrono::{DateTime, Utc};
 
 #[path = "../transaction.rs"]
-mod transaction;
+pub mod transaction;
 use transaction::Transaction;
 
 #[derive(Debug, Clone)]
@@ -28,8 +28,8 @@ impl BlockData {
         }
     }
     #[allow(dead_code)]
-    pub fn add_transaction(&mut self, transaction_to_add: &Transaction) {
-        self.transactions.push(*transaction_to_add);
+    pub fn add_transaction(&mut self, transaction_to_add: transaction::Transaction) {
+        self.transactions.push(transaction_to_add);
     }
 }
 
@@ -72,7 +72,7 @@ mod tests {
         let dummy_transaction_data = TransactionData::new(dummy_from, dummy_rec, dummy_val);
         let dummy_transaction = Transaction::new(dummy_transaction_data);
 
-        dummy_block_data.add_transaction(&dummy_transaction);
+        dummy_block_data.add_transaction(dummy_transaction);
 
         assert_eq!(dummy_block_data.transactions.len(), 1);
         assert_eq!(dummy_block_data.transactions[0], dummy_transaction);
