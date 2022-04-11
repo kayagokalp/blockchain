@@ -1,33 +1,25 @@
-use std::collections::hash_map::DefaultHasher;
-use std::hash::{Hash, Hasher};
+#[path = "./block/mod.rs"]
+mod block;
+use block::Block;
 
 #[allow(dead_code)]
-pub fn mine_block(hash: u64) -> u64 {
-    let mut nonce = 0;
+pub fn mine_block_from_block(current_block: &mut Block) -> u64 {
+    let mut current_nonce = 0;
     let mut solved = false;
-
     while !solved {
-        let current_hash = hash_current(hash + nonce);
-        solved = is_solved(current_hash);
+        current_block.set_nonce(current_nonce);
+        solved = is_solved(current_block.hash);
         if !solved {
-            nonce += 1;
+            current_nonce += 1;
         }
     }
-    nonce
-}
-
-#[allow(dead_code)]
-fn hash_current(current_data: u64) -> u64 {
-    let mut hasher = DefaultHasher::new();
-    current_data.hash(&mut hasher);
-    hasher.finish()
+    current_nonce
 }
 
 #[allow(dead_code)]
 pub fn is_solved(current_hash: u64) -> bool {
     //checks if the first *1* byte is 0.
-    let mask = 15u64 << 60;
-    println!("flags: {:#064b}", mask);
+    let mask = 0b1111111100000000000000000000000000000000000000000000000000000000;
     current_hash & mask == 0
 }
 
@@ -42,17 +34,10 @@ mod tests {
         assert_eq!(is_solved(true_value), true);
         assert_eq!(is_solved(false_value), false);
     }
-
     #[test]
     fn test_mine_block() {
-        let dummy_data = "kaya";
-        let mut hasher = DefaultHasher::new();
-        dummy_data.hash(&mut hasher);
-        let dummy_data_hash = hasher.finish();
-        let calculated_nonce = mine_block(dummy_data_hash);
-        assert_eq!(
-            is_solved(hash_current(dummy_data_hash + calculated_nonce)),
-            true
-        )
+        let mut block = Block::new_with_data(0, "dummy".to_string(), 0, 0);
+        mine_block_from_block(&mut block);
+        assert_eq!(is_solved(block.hash), true);
     }
 }
