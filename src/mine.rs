@@ -1,5 +1,3 @@
-use std::collections::hash_map::DefaultHasher;
-use std::hash::{Hash, Hasher};
 #[path = "./block/mod.rs"]
 mod block;
 use block::Block;
@@ -16,13 +14,6 @@ pub fn mine_block_from_block(current_block: &mut Block) -> u64 {
         }
     }
     current_nonce
-}
-
-#[allow(dead_code)]
-fn hash_current(current_data: u64) -> u64 {
-    let mut hasher = DefaultHasher::new();
-    current_data.hash(&mut hasher);
-    hasher.finish()
 }
 
 #[allow(dead_code)]
